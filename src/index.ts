@@ -131,6 +131,11 @@ const startAgents = async () => {
   let serverPort = parseInt(settings.SERVER_PORT || "3000");
   const args = parseArguments();
 
+  // Add health check endpoint
+  directClient.addEndpoint('GET', '/health', async (req, res) => {
+    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+  });
+
   let charactersArg = args.characters || args.character;
   let characters = [character];
 
