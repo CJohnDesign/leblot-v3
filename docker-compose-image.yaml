@@ -1,7 +1,10 @@
 services:
     eliza:
         platform: linux/amd64
-        command: ["pnpm", "start", "--characters=./characters/leblot.character.json", "--model-provider=openrouter"]
+        command: >
+            sh -c "pnpm start 
+            --characters=characters/leblot.character.json 
+            --model-provider=openrouter"
         image: eliza-starter:v1
         stdin_open: true
         tty: true

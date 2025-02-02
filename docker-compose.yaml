@@ -1,6 +1,9 @@
 services:
     eliza:
-        command: ["pnpm", "start", "--characters=./characters/leblot.character.json", "--model-provider=openrouter"]
+        command: >
+            sh -c "pnpm start 
+            --characters=characters/leblot.character.json 
+            --model-provider=openrouter"
         build:
             context: .
             dockerfile: Dockerfile
