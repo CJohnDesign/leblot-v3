@@ -4,7 +4,15 @@ FROM node:23.3.0-slim AS builder
 # Install pnpm globally and install necessary build tools
 RUN npm install -g pnpm@9.15.1 && \
     apt-get update && \
-    apt-get install -y git python3 make g++ && \
+    apt-get install -y git python3 make g++ \
+    # Canvas dependencies
+    build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev \
+    # Playwright dependencies
+    libglib2.0-0 libnss3 libnspr4 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 \
+    libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 \
+    libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2 libatspi2.0-0 \
+    # Additional X11 and GTK dependencies
+    libx11-xcb1 libxcursor1 libgtk-3-0 libgdk-3-0 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -38,10 +46,17 @@ USER node
 # Create a new stage for the final image
 FROM node:23.3.0-slim
 
-# Install runtime dependencies if needed
-RUN npm install -g pnpm@9.15.1
+# Install runtime dependencies
 RUN apt-get update && \
-    apt-get install -y git python3 && \
+    apt-get install -y git python3 \
+    # Canvas runtime dependencies
+    libcairo2 libpango1.0-0 libjpeg62-turbo librsvg2-2 \
+    # Playwright runtime dependencies
+    libglib2.0-0 libnss3 libnspr4 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 \
+    libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 \
+    libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2 libatspi2.0-0 \
+    # Additional X11 and GTK runtime dependencies
+    libx11-xcb1 libxcursor1 libgtk-3-0 libgdk-3-0 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -60,3 +75,16 @@ COPY --from=builder /app/pnpm-lock.yaml /app/
 RUN ls -la /app/characters/leblot.character.json || echo "Character file not found"
 
 EXPOSE 3000
+
+ENV NODE_ENV=production
+ENV DAEMON_PROCESS=true
+
+# Switch to non-root user for security
+USER node
+
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Command to run the application
+CMD ["pnpm", "start:railway"]

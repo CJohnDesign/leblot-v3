@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
-    "start": "tsc && node --loader ts-node/esm src/index.ts",
+    "start": "tsc && node --loader ts-node/esm src/index.ts --characters=characters/leblot.character.json --model-provider=openrouter",
     "start:non-interactive": "tsc && node --loader ts-node/esm src/index.ts --non-interactive",
     "start:railway": "NODE_ENV=production tsc && node --loader ts-node/esm src/index.ts --characters=characters/leblot.character.json --model-provider=openrouter --non-interactive",
     "clean": "./scripts/clean.sh",
