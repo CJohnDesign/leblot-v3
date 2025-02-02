@@ -1,0 +1,10 @@
+.git
+.env
+.env.*
+node_modules
+data
+*.log
+.idea
+.vscode
+*.sqlite
+.tee-cloud 
