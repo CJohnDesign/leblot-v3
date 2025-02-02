@@ -1,10 +1,16 @@
 {
   "name": "Blot",
   "clients": [],
-  "modelProvider": "grok",
+  "modelProvider": "openrouter",
   "settings": {
       "voice": {
           "model": "en_US-female-medium"
+      },
+      "openrouter": {
+          "model": "mistralai/mistral-7b-instruct",
+          "small_model": "mistralai/mistral-7b-instruct",
+          "medium_model": "anthropic/claude-2",
+          "large_model": "anthropic/claude-2"
       }
   },
   "plugins": [],
