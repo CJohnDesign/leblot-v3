@@ -8,8 +8,11 @@ services:
         tty: true
         volumes:
             - ./data:/app/data
+            - ./characters:/app/characters
         environment:
-            - OPENROUTER_API_KEY=
+            - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+            - MODEL_PROVIDER=openrouter
+            - CHARACTER_PATH=characters/leblot.character.json
             - ELEVENLABS_XI_API_KEY=
             - ELEVENLABS_MODEL_ID=eleven_multilingual_v2
             - ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM

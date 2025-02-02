@@ -56,6 +56,9 @@ COPY --from=builder /app/dist /app/dist
 COPY --from=builder /app/tsconfig.json /app/
 COPY --from=builder /app/pnpm-lock.yaml /app/
 
+# Ensure the character file exists
+RUN ls -la /app/characters/leblot.character.json || echo "Character file not found"
+
 EXPOSE 3000
-# Set the command to run the application
-CMD ["pnpm", "start", "--non-interactive"]
+# Set the command to run the application with explicit model provider
+CMD ["pnpm", "start", "--characters=characters/leblot.character.json", "--model-provider=openrouter"]
