@@ -131,9 +131,14 @@ const startAgents = async () => {
   let serverPort = parseInt(settings.SERVER_PORT || "3000");
   const args = parseArguments();
 
-  // Add health check endpoint
-  directClient.addEndpoint('GET', '/health', async (req, res) => {
-    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+  // Add health check endpoint using express app
+  directClient.app.get('/health', (req, res) => {
+    res.json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version || '0.1.9',
+      environment: process.env.NODE_ENV
+    });
   });
 
   let charactersArg = args.characters || args.character;

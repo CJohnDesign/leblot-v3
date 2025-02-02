@@ -5,7 +5,8 @@ buildCommand = "pnpm install && pnpm build"
 [deploy]
 startCommand = "pnpm start:railway"
 healthcheckPath = "/health"
-healthcheckTimeout = 100
+healthcheckTimeout = 30
+healthcheckInterval = 15
 restartPolicyMaxRetries = 5
 numReplicas = 1
 sleepApplication = false
@@ -14,4 +15,5 @@ region = "us-west-1"
 [deploy.envs]
 NODE_ENV = "production"
 PORT = "$PORT"
-TZ = "UTC" 
+TZ = "UTC"
+DAEMON_PROCESS = "true" 
